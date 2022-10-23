@@ -23,13 +23,20 @@ type AddDigitActionType = {
     payload: { digit: string };
 };
 
-export type ActionsType = AddDigitActionType;
+type ClearActionType = {
+    type: CalculatorActions.CLEAR;
+};
+
+export type ActionsType = AddDigitActionType | ClearActionType;
 
 export const calculatorReducer = (
     state = initialState,
     action: ActionsType
 ): CalculatorStateType => {
     switch (action.type) {
+        case CalculatorActions.CLEAR:
+            return initialState;
+
         case CalculatorActions.ADD_DIGIT:
             if (action.payload.digit === '0' && state.currentOperand === '0') {
                 return state;
