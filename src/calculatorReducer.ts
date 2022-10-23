@@ -8,10 +8,10 @@ export type CalculatorStateType = {
 };
 
 export const initialState: CalculatorStateType = {
-    currentOperand: '',
+    currentOperand: '0',
     prevOperand: '',
     operation: '',
-    overwrite: false,
+    overwrite: true,
 };
 
 export enum CalculatorActions {
@@ -40,11 +40,16 @@ type EvaluateActionType = {
     type: CalculatorActions.EVALUATE;
 };
 
+type DeleteDigitActionType = {
+    type: CalculatorActions.DELETE_DIGIT;
+};
+
 export type ActionsType =
     | AddDigitActionType
     | ClearActionType
     | ChooseOperationActionType
-    | EvaluateActionType;
+    | EvaluateActionType
+    | DeleteDigitActionType;
 
 export const calculatorReducer = (
     state = initialState,
@@ -128,6 +133,29 @@ export const calculatorReducer = (
                 prevOperand: '',
                 currentOperand: evaluate(state),
                 overwrite: true,
+            };
+        }
+
+        case CalculatorActions.DELETE_DIGIT: {
+            if (state.overwrite) {
+                return {
+                    ...state,
+                    currentOperand: '',
+                    overwrite: false,
+                };
+            }
+
+            if (state.currentOperand == '') return state;
+            if (state.currentOperand.length === 1) {
+                return {
+                    ...state,
+                    currentOperand: '',
+                };
+            }
+
+            return {
+                ...state,
+                currentOperand: state.currentOperand.slice(0, -1),
             };
         }
 
