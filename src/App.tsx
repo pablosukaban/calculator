@@ -54,7 +54,7 @@ const App = () => {
             <DigitButton digit="3" dispatch={dispatch} />
             <button>-</button>
             <DigitButton digit="." dispatch={dispatch} />
-            <button>0</button>
+            <DigitButton digit="0" dispatch={dispatch} />
             <button className="span-two">=</button>
         </div>
     );
