@@ -5,9 +5,9 @@ export type CalculatorStateType = {
 };
 
 export const initialState: CalculatorStateType = {
-    currentOperand: '5',
-    prevOperand: '5',
-    operation: '+',
+    currentOperand: '',
+    prevOperand: '',
+    operation: '',
 };
 
 export enum CalculatorActions {
@@ -31,6 +31,15 @@ export const calculatorReducer = (
 ): CalculatorStateType => {
     switch (action.type) {
         case CalculatorActions.ADD_DIGIT:
+            if (action.payload.digit === '0' && state.currentOperand === '0') {
+                return state;
+            }
+            if (
+                action.payload.digit === '.' &&
+                state.currentOperand.includes('.')
+            ) {
+                return state;
+            }
             return {
                 ...state,
                 currentOperand: `${state.currentOperand || ''}${
