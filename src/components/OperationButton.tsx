@@ -1,5 +1,6 @@
 import React from 'react';
-import { ActionsType, CalculatorActions } from '../calculatorReducer';
+import { CalculatorActions } from '../calculatorReducer';
+import { ActionsType } from '../types';
 
 type OperationButtonProps = {
     operation: string;

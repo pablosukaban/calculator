@@ -1,18 +1,5 @@
+import { ActionsType, CalculatorStateType } from './types';
 import { evaluate } from './utils/evaluate';
-
-export type CalculatorStateType = {
-    currentOperand: string;
-    prevOperand: string;
-    operation: string;
-    overwrite: boolean;
-};
-
-export const initialState: CalculatorStateType = {
-    currentOperand: '0',
-    prevOperand: '',
-    operation: '',
-    overwrite: true,
-};
 
 export enum CalculatorActions {
     ADD_DIGIT = 'addDigit',
@@ -22,34 +9,12 @@ export enum CalculatorActions {
     EVALUATE = 'evaluate',
 }
 
-type AddDigitActionType = {
-    type: CalculatorActions.ADD_DIGIT;
-    payload: { digit: string };
+export const initialState: CalculatorStateType = {
+    currentOperand: '0',
+    prevOperand: '',
+    operation: '',
+    overwrite: true,
 };
-
-type ClearActionType = {
-    type: CalculatorActions.CLEAR;
-};
-
-type ChooseOperationActionType = {
-    type: CalculatorActions.CHOOSE_OPERATION;
-    payload: { operation: string };
-};
-
-type EvaluateActionType = {
-    type: CalculatorActions.EVALUATE;
-};
-
-type DeleteDigitActionType = {
-    type: CalculatorActions.DELETE_DIGIT;
-};
-
-export type ActionsType =
-    | AddDigitActionType
-    | ClearActionType
-    | ChooseOperationActionType
-    | EvaluateActionType
-    | DeleteDigitActionType;
 
 export const calculatorReducer = (
     state = initialState,

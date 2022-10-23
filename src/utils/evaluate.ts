@@ -1,4 +1,4 @@
-import { CalculatorStateType } from '../calculatorReducer';
+import { CalculatorStateType } from '../types';
 
 export const evaluate = ({
     currentOperand,
