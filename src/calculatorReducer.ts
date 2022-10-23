@@ -4,12 +4,14 @@ export type CalculatorStateType = {
     currentOperand: string;
     prevOperand: string;
     operation: string;
+    overwrite: boolean;
 };
 
 export const initialState: CalculatorStateType = {
     currentOperand: '',
     prevOperand: '',
     operation: '',
+    overwrite: false,
 };
 
 export enum CalculatorActions {
@@ -34,30 +36,45 @@ type ChooseOperationActionType = {
     payload: { operation: string };
 };
 
+type EvaluateActionType = {
+    type: CalculatorActions.EVALUATE;
+};
+
 export type ActionsType =
     | AddDigitActionType
     | ClearActionType
-    | ChooseOperationActionType;
+    | ChooseOperationActionType
+    | EvaluateActionType;
 
 export const calculatorReducer = (
     state = initialState,
     action: ActionsType
 ): CalculatorStateType => {
     switch (action.type) {
-        case CalculatorActions.CLEAR: {
-            return initialState;
-        }
-
         case CalculatorActions.ADD_DIGIT: {
+            if (state.overwrite) {
+                return {
+                    ...state,
+                    currentOperand: action.payload.digit,
+                    overwrite: false,
+                };
+            }
+
             if (action.payload.digit === '0' && state.currentOperand === '0') {
                 return state;
             }
+
             if (
                 action.payload.digit === '.' &&
                 state.currentOperand.includes('.')
             ) {
                 return state;
             }
+
+            if (action.payload.digit === '.' && state.currentOperand == '') {
+                return state;
+            }
+
             return {
                 ...state,
                 currentOperand: `${state.currentOperand || ''}${
@@ -89,6 +106,28 @@ export const calculatorReducer = (
                 currentOperand: '',
                 operation: action.payload.operation,
                 prevOperand: evaluate(state),
+            };
+        }
+
+        case CalculatorActions.CLEAR: {
+            return initialState;
+        }
+
+        case CalculatorActions.EVALUATE: {
+            if (
+                state.currentOperand == '' ||
+                state.operation == '' ||
+                state.operation == ''
+            ) {
+                return state;
+            }
+
+            return {
+                ...state,
+                operation: '',
+                prevOperand: '',
+                currentOperand: evaluate(state),
+                overwrite: true,
             };
         }
 
