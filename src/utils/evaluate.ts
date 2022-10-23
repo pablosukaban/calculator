@@ -14,16 +14,16 @@ export const evaluate = ({
 
     switch (operation) {
         case '+':
-            result = curNum + prevNum;
+            result = prevNum + curNum;
             break;
         case '-':
-            result = curNum - prevNum;
+            result = prevNum - curNum;
             break;
         case '*':
-            result = curNum * prevNum;
+            result = prevNum * curNum;
             break;
         case '÷':
-            result = curNum / prevNum;
+            result = prevNum / curNum;
             break;
 
         default:
