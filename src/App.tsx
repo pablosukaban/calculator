@@ -1,31 +1,13 @@
 import { useReducer } from 'react';
 import './App.css';
 import {
-    ActionsType,
     CalculatorActions,
     calculatorReducer,
     initialState,
 } from './calculatorReducer';
-
-type DigitButtonProps = {
-    dispatch: ({}: ActionsType) => void;
-    digit: string;
-};
-
-export const DigitButton = ({ dispatch, digit }: DigitButtonProps) => {
-    return (
-        <button
-            onClick={() =>
-                dispatch({
-                    type: CalculatorActions.ADD_DIGIT,
-                    payload: { digit },
-                })
-            }
-        >
-            {digit}
-        </button>
-    );
-};
+import { DigitButton } from './components/DigitButton';
+import { OperationButton } from './components/OperationButton';
+import { formatOperand } from './utils/digitFormatter';
 
 const App = () => {
     const [state, dispatch] = useReducer(calculatorReducer, initialState);
@@ -34,28 +16,46 @@ const App = () => {
         <div className="calculator-grid">
             <div className="output">
                 <div className="previous-operand">
-                    {state.prevOperand} {state.operation}
+                    {formatOperand(state.prevOperand)} {state.operation}
                 </div>
-                <div className="current-operand">{state.currentOperand}</div>
+                <div className="current-operand">
+                    {formatOperand(state.currentOperand)}
+                </div>
             </div>
-            <button className="span-two">AC</button>
-            <button>DEL</button>
-            <button>÷</button>
+            <button
+                className="span-two"
+                onClick={() => dispatch({ type: CalculatorActions.CLEAR })}
+            >
+                AC
+            </button>
+            <button
+                onClick={() =>
+                    dispatch({ type: CalculatorActions.DELETE_DIGIT })
+                }
+            >
+                DEL
+            </button>
+            <OperationButton dispatch={dispatch} operation="÷" />
             <DigitButton digit="7" dispatch={dispatch} />
             <DigitButton digit="8" dispatch={dispatch} />
             <DigitButton digit="9" dispatch={dispatch} />
-            <button>*</button>
+            <OperationButton dispatch={dispatch} operation="*" />
             <DigitButton digit="4" dispatch={dispatch} />
             <DigitButton digit="5" dispatch={dispatch} />
             <DigitButton digit="6" dispatch={dispatch} />
-            <button>+</button>
+            <OperationButton dispatch={dispatch} operation="+" />
             <DigitButton digit="1" dispatch={dispatch} />
             <DigitButton digit="2" dispatch={dispatch} />
             <DigitButton digit="3" dispatch={dispatch} />
-            <button>-</button>
+            <OperationButton dispatch={dispatch} operation="-" />
             <DigitButton digit="." dispatch={dispatch} />
             <DigitButton digit="0" dispatch={dispatch} />
-            <button className="span-two">=</button>
+            <button
+                className="span-two"
+                onClick={() => dispatch({ type: CalculatorActions.EVALUATE })}
+            >
+                =
+            </button>
         </div>
     );
 };
